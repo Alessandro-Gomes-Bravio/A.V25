@@ -83,9 +83,15 @@ def register():
     Registratie van een nieuwe gebruiker met naam, e-mail, wachtwoord en rol.
     """
     name = request.form['name']
-    email = request.form['email']
+    email = request.form['email'] 
     password = request.form['password']
+    confirm_password = request.form['confirm_password']
     role = request.form['role']
+    
+    
+    if password != confirm_password:
+        flash("Wachtwoorden komen niet overeen. Probeer opnieuw.", "error")
+        return redirect('/')
 
     # Valideer of de opgegeven rol geldig is
     if role not in ('user', 'admin'):
