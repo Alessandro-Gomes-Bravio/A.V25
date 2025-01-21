@@ -82,18 +82,26 @@ def verify_facial_id(image_data):
 def match_encoding_with_database(encoding):
     """
     Vergelijkt een gezichtsencoding met opgeslagen encodings in de database.
+    Retourneert een lijst van overeenkomende gebruikers-ID's.
     """
     conn = mysql.connector.connect(
         host="localhost", user="root", password="", database="taskmanagement"
     )
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT id, facial_scan_data FROM users"
+    query = "SELECT id, name, email, role, facial_scan_data FROM users"
     cursor.execute(query)
     users = cursor.fetchall()
     conn.close()
 
+    matching_users = []
     for user in users:
         stored_encoding = np.frombuffer(user['facial_scan_data'], dtype=np.float64)
         if face_recognition.compare_faces([stored_encoding], encoding)[0]:
-            return user['id']
-    return None
+             matching_users.append({
+                "id": user["id"],
+                "name": user["name"],
+                "email": user["email"],
+                "role": user["role"]
+            })
+
+    return matching_users

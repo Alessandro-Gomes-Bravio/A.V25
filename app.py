@@ -141,32 +141,25 @@ def login_facial():
     Verwerk de Face ID-login en stuur door naar het juiste dashboard op basis van de rol.
     """
     image_data = request.form['image']
-    user_id = verify_facial_id(image_data)
+    matching_users = verify_facial_id(image_data)
 
-    if user_id:
-        user = User.get_user_by_id(user_id)
-
-        if not user:
-            flash("Gebruiker niet gevonden. Probeer opnieuw.", "error")
-            return redirect('/')
-
-        # Sla de gebruiker op in de sessie
-        session['user_id'] = user['id']
-        session['user_name'] = user['name']
-        session['user_role'] = user['role']
-
-        flash(f"Welkom, {user['name']}!")
-
-        # Redirect op basis van rol
-        if user['role'] == 'admin':
-            return redirect(url_for('admin_dashboard'))
+    if matching_users:
+        if len(matching_users) == 1:
+            # Als er maar één match is, log direct in
+            user_id = matching_users[0]['id']
+            user = User.get_user_by_id(user_id)
+            session['user_id'] = user['id']
+            session['user_name'] = user['name']
+            session['user_email'] = user['email']
+            session['user_role'] = user['role']
+            flash(f"Welkom, {user['name']}!")
+            return redirect(url_for('admin_dashboard' if user['role'] == 'admin' else 'user_dashboard'))
         else:
-            return redirect(url_for('user_dashboard'))
+            # Meerdere matches gevonden, toon een keuze
+            return render_template('choose_account.html', users=matching_users)
     else:
         flash("Gezichtsherkenning mislukt. Probeer opnieuw.", "error")
         return redirect('/')
-
-    
 
 
 
@@ -179,6 +172,24 @@ def logout():
     flash("Je bent succesvol uitgelogd.")
     return redirect('/')
 
+@app.route('/choose_account', methods=['POST'])
+def choose_account():
+    """
+    Verwerk de keuze van de gebruiker en log in op het gekozen account.
+    """
+    user_id = request.form['user_id']
+    user = User.get_user_by_id(user_id)
+
+    if user:
+        session['user_id'] = user['id']
+        session['user_name'] = user['name']
+        session['user_email'] = user['email']
+        session['user_role'] = user['role']
+        flash(f"Welkom, {user['name']}!")
+        return redirect(url_for('admin_dashboard' if user['role'] == 'admin' else 'user_dashboard'))
+    else:
+        flash("Ongeldig account gekozen. Probeer opnieuw.", "error")
+        return redirect('/')
 
 
 
