@@ -12,7 +12,9 @@
         <ul>
             <li><a href="admin.html">Home</a></li>
             <li><a href="#">Instellingen</a></li>
-            
+            <li class="dropdown">
+                <a href="#">Facial ID Activation</a>
+                <ul class="dropdown-menu">
                     <li><a id="scanNowLink" href="#">Scan Now</a></li>
                 </ul>
             </li>
@@ -29,6 +31,18 @@
         <h1>Admin Dashboard</h1>
         <p>Welkom op het admin-dashboard. Kies een optie in de navigatiebalk.</p>
     </div>
+
+
+    <div id="facialContainer" class="hidden">
+        <h2>Register Your Facial ID</h2>
+        <video id="video" autoplay muted></video>
+        <button id="registerFacialBtn" class="btn">Scan Facial ID</button>
+        <form id="facialForm" action="/register_facial" method="POST">
+            <input type="hidden" name="image" id="imageInput">
+        </form>
+        <button id="closeFacialBtn" class="btn danger-btn">Close</button>
+    </div>
+
 
     
     <script src="{{ url_for('static', filename='script.js') }}"></script>

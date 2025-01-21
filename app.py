@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
-
+from facialreg import save_facial_encoding, verify_facial_id
 from models import User
 from models import db 
 
@@ -111,6 +111,62 @@ def register():
     except ValueError as e:
         flash(str(e), "error")
     return redirect('/')
+
+
+
+
+@app.route('/register_facial', methods=['POST'])
+def register_facial():
+    """
+    Route voor het registreren van gezichtsherkenning.
+    Slaat de facial encoding op in de database.
+    """
+    if 'user_id' not in session:
+        flash("Je moet ingelogd zijn om een facial ID te registreren.", "error")
+        return redirect('/')
+
+    image_data = request.form['image']
+    user_id = session['user_id']  # Haal de ingelogde gebruiker-ID op uit de sessie
+
+    if save_facial_encoding(image_data, user_id):
+        flash("Facial ID succesvol geregistreerd!")
+        return redirect('/')
+    else:
+        flash("Er is een probleem opgetreden bij het registreren.")
+        return redirect(url_for('admin_dashboard'))
+
+@app.route('/login_facial', methods=['POST'])
+def login_facial():
+    """
+    Verwerk de Face ID-login en stuur door naar het juiste dashboard op basis van de rol.
+    """
+    image_data = request.form['image']
+    user_id = verify_facial_id(image_data)
+
+    if user_id:
+        user = User.get_user_by_id(user_id)
+
+        if not user:
+            flash("Gebruiker niet gevonden. Probeer opnieuw.", "error")
+            return redirect('/')
+
+        # Sla de gebruiker op in de sessie
+        session['user_id'] = user['id']
+        session['user_name'] = user['name']
+        session['user_role'] = user['role']
+
+        flash(f"Welkom, {user['name']}!")
+
+        # Redirect op basis van rol
+        if user['role'] == 'admin':
+            return redirect(url_for('admin_dashboard'))
+        else:
+            return redirect(url_for('user_dashboard'))
+    else:
+        flash("Gezichtsherkenning mislukt. Probeer opnieuw.", "error")
+        return redirect('/')
+
+    
 
 
 

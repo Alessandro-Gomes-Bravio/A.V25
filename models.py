@@ -82,3 +82,24 @@ class User:
         user = cursor.fetchone()
         print(f"DEBUG: Inlogresultaat: {user}")  # Debugging
         return user
+    
+    
+    @staticmethod
+    def update_facial_data(user_id, facial_scan_data):
+        """
+        Update de facial_scan_data van een gebruiker in de database.
+        """
+        query = "UPDATE users SET facial_scan_data=%s WHERE id=%s"
+        db.execute(query, (facial_scan_data, user_id))
+        print(f"DEBUG: Facial data bijgewerkt voor gebruiker ID {user_id}")  # Debugging
+
+    @staticmethod
+    def get_all_users():
+        """
+        Haal alle gebruikers op uit de database.
+        """
+        query = "SELECT * FROM users"
+        cursor = db.execute(query)
+        users = cursor.fetchall()
+        print(f"DEBUG: Alle gebruikers: {users}")  # Debugging
+        return users
