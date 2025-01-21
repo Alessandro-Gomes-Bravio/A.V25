@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='user.css') }}">
+</head>
+<body>
+    <!-- Navigatiebalk -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Instellingen</a></li>
+           
+                </ul>
+            </li>
+        </ul>
+        <div class="user-info">
+            Ingelogd als: {{ user_name }} ({{ user_role }})
+            <a href="{{ url_for('logout') }}" class="logout-link">Uitloggen</a>
+        </div>
+    </nav>
+
+    <!-- Hoofdinhoud -->
+    <div class="container">
+        <h1>user Dashboard</h1>
+        <p>Welkom op het user-dashboard. Kies een optie in de navigatiebalk.</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

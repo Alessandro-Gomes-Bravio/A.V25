@@ -61,3 +61,24 @@ class User:
         
         query = "INSERT INTO users (name, email, password, role) VALUES (%s, %s, %s, %s)"
         db.execute(query, (name, email, password, role))
+    @staticmethod
+    def get_user_by_id(user_id):
+        """
+        Haal een gebruiker op basis van zijn ID.
+        """
+        query = "SELECT * FROM users WHERE id=%s"
+        cursor = db.execute(query, (user_id,))
+        user = cursor.fetchone()
+        print(f"DEBUG: Gebruiker gevonden op ID: {user}")  # Debugging
+        return user
+
+    @staticmethod
+    def login(email, password, role):
+        """
+        Verifieert de login van een gebruiker op basis van e-mail, wachtwoord en rol.
+        """
+        query = "SELECT * FROM users WHERE email=%s AND password=%s AND role=%s"
+        cursor = db.execute(query, (email, password, role))
+        user = cursor.fetchone()
+        print(f"DEBUG: Inlogresultaat: {user}")  # Debugging
+        return user

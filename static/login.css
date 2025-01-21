@@ -1,0 +1,190 @@
+/* Globale instellingen */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    overflow-y: auto; /* Zorgt voor scrollbaarheid */
+}
+
+/* Login-container */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Login-kaart */
+.login-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.login-card h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Formuliervelden */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 14px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #6a11cb;
+    box-shadow: 0 0 5px rgba(106, 17, 203, 0.5);
+}
+
+/* Knoppen */
+.login-btn {
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin: 10px 0;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-btn:hover {
+    transform: scale(1.02);
+}
+
+.primary-btn {
+    background: #6a11cb;
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #2575fc;
+}
+
+.secondary-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.secondary-btn:hover {
+    background: #45a049;
+}
+
+.tertiary-btn {
+    background: #FF9800;
+    color: white;
+}
+
+.tertiary-btn:hover {
+    background: #FF5722;
+}
+
+.danger-btn {
+    background: #F44336;
+    color: white;
+}
+
+.danger-btn:hover {
+    background: #D32F2F;
+}
+
+/* Webcam-container */
+#showFaceContainer {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+    display: none; /* Verborgen standaard */
+    text-align: center;
+    color: #333;
+}
+
+/* Zorg dat de container zichtbaar wordt als de hidden-class wordt verwijderd */
+#showFaceContainer.active {
+    display: block;
+}
+
+#previewVideo {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* Flash-meldingen */
+.flash {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.flash.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.flash.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Responsieve weergave voor mobiel */
+@media (max-width: 600px) {
+    .login-card {
+        padding: 20px;
+        width: 90%;
+    }
+
+    #showFaceContainer {
+        padding: 15px;
+        width: 90%;
+    }
+
+    .login-btn {
+        padding: 12px;
+        font-size: 14px;
+    }
+}

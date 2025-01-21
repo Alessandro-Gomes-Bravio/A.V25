@@ -7,9 +7,43 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 </head>
 <body>
+    <div class="login-container">
+        <div class="login-card">
+            <h1>Login</h1>
 
+            <!-- Flash-meldingen -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
 
-            
+            <!-- Loginformulier -->
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label for="email">E-mailadres</label>
+                    <input type="email" id="email" name="email" placeholder="Voer je e-mailadres in" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Wachtwoord</label>
+                    <input type="password" id="password" name="password" placeholder="Voer je wachtwoord in" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Rol</label>
+                    <select id="role" name="role" required>
+                        <option value="">Selecteer een rol</option>
+                        <option value="user">user</option>
+                        <option value="admin">admin</option>
+                    </select>
+                </div>
+                <button type="submit" class="login-btn primary-btn">Inloggen</button>
+            </form>
+
+     
         <div class="login-card">
             <h1>Registreren</h1>
             <!-- Registratieformulier -->
@@ -25,6 +59,10 @@
                 <div class="form-group">
                     <label for="password">Wachtwoord</label>
                     <input type="password" id="password" name="password" placeholder="Voer je wachtwoord in" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Bevestig Wachtwoord</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Herhaal je wachtwoord" required>
                 </div>
                 <div class="form-group">
                     <label for="role">Rol</label>
