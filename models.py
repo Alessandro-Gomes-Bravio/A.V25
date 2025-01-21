@@ -103,3 +103,17 @@ class User:
         users = cursor.fetchall()
         print(f"DEBUG: Alle gebruikers: {users}")  # Debugging
         return users
+
+class Task:
+    @staticmethod
+    def add_task(title, description, status, priority, deadline):
+        """
+        Voeg een taak toe aan de database.
+        """
+        query = """
+        INSERT INTO tasks (title, description, status, priority, deadline)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        db.execute(query, (title, description, status, priority, deadline))
+        print(f"DEBUG: Taak toegevoegd: {title}")  # Debugging
+

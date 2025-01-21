@@ -30,6 +30,28 @@
     <div class="container">
         <h1>user Dashboard</h1>
         <p>Welkom op het userhboard. Kies een optie in de navigatiebalk.</p>
+
+
+        <div class="tasks">
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Deadline</th>
+                </tr>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task['title'] }}</td>
+                    <td>{{task['status']}}</td>
+                    <td>{{ task['priority'] }}</td>
+                    <td>{{ task['deadline'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <a href="{{ url_for('add_task') }}">Add Task</a>
+        </div>
+        
     </div>
 
 
