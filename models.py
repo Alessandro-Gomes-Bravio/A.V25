@@ -38,3 +38,26 @@ class Database:
 # Globale database-instantie
 db = Database()
 
+class User:
+    VALID_ROLES = ('user', 'admin')  # Toegestane rollen
+    @staticmethod
+    def get_user_by_email(email):
+        """
+        Haal een gebruiker op basis van zijn e-mailadres.
+        """
+        query = "SELECT * FROM users WHERE email=%s"
+        cursor = db.execute(query, (email,))
+        user = cursor.fetchone()
+        print(f"DEBUG: Gebruiker gevonden: {user}")  # Debugging
+        return user
+    @staticmethod
+    def register_user(name, email, password, role):
+        """
+        Registreer een nieuwe gebruiker in de database met de opgegeven rol.
+        Valideer of de rol geldig is.
+        """
+        if role not in User.VALID_ROLES:
+            raise ValueError("Ongeldige rol. Alleen 'user' of 'admin' is toegestaan.")
+        
+        query = "INSERT INTO users (name, email, password, role) VALUES (%s, %s, %s, %s)"
+        db.execute(query, (name, email, password, role))
