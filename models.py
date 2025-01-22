@@ -152,3 +152,16 @@ class Task:
         query = "SELECT * FROM tasks WHERE id = %s"
         cursor = db.execute(query, (task_id,))
         return cursor.fetchone()
+
+    @staticmethod
+    def update_task(task_id, title, description, status, priority, deadline, assigned_to, assigned_by):
+        """
+        Update a task in the database.
+        """
+        query = """
+        UPDATE tasks
+        SET title = %s, description = %s, status = %s, priority = %s, deadline = %s, assigned_to = %s, assigned_by = %s
+        WHERE id = %s
+        """
+        db.execute(query, (title, description, status, priority, deadline, assigned_to, assigned_by, task_id))
+        print(f"DEBUG: Taak geüpdatet: {title}")

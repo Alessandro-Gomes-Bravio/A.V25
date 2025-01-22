@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Task Details</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='task.css') }}">
+    </head>
+    <body>
+        <form action="{{ url_for('update_task', task_id=task['id']) }}" method="POST">
+            <p><strong>Title:</strong> <input type="text" name="title" value="{{ task['title'] }}" /></p>
+            <p><strong>Description:</strong> <textarea name="description">{{ task['description'] }}</textarea></p>
+            <p><strong>Status:</strong> <input type="text" name="status" value="{{ task['status'] }}" /></p>
+            <p><strong>Priority:</strong> <input type="text" name="priority" value="{{ task['priority'] }}" /></p>
+            <p><strong>Deadline:</strong> <input type="date" name="deadline" value="{{ task['deadline'] }}" /></p>
+            <p><strong>Assigned To:</strong> <input type="text" name="assigned_to" value="{{ task['assigned_to'] }}" /></p>
+            <p><strong>Assigned By:</strong> <input type="text" name="assigned_by" value="{{ task['assigned_by'] }}" /></p>
+            <p><strong>Created At:</strong> {{ task['created_at'] }}</p>
+            <p><strong>Updated At:</strong> {{ task['updated_at'] }}</p>
+        
+            <button type="submit">Update Task</button>
+        </form>        
+        <a href="{{ url_for('user') }}">Back to Task List</a>
+    </body>
+</html>
