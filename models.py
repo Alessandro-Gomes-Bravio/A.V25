@@ -116,4 +116,21 @@ class Task:
         """
         db.execute(query, (title, description, status, priority, deadline))
         print(f"DEBUG: Taak toegevoegd: {title}")  # Debugging
+  
+    @staticmethod
+    def get_all_tasks():
+        """
+        Fetch all tasks from the database.
+        """
+        query = "SELECT * FROM tasks"
+        cursor = db.execute(query)
+        return cursor.fetchall()
 
+    @staticmethod
+    def get_task_by_id(task_id):
+        """
+        Haal een taak op basis van ID.
+        """
+        query = "SELECT * FROM tasks WHERE id = %s"
+        cursor = db.execute(query, (task_id,))
+        return cursor.fetchone()

@@ -64,7 +64,11 @@ def user_dashboard():
     if 'user_id' not in session:
         flash("Je moet ingelogd zijn om toegang te krijgen tot het gebruikersdashboard.", "error")
         return redirect('/')
-    return render_template('user.html', user_name=session.get('user_name'), user_role=session.get('user_role'))
+    
+    # Retrieve tasks for the logged-in user
+    tasks = Task.get_all_tasks()  # Assuming it fetches tasks for all users (adapt if needed)
+    return render_template('user.html', user_name=session.get('user_name'), user_role=session.get('user_role'), tasks=tasks)
+
 
  
 @app.route('/admin')
@@ -220,10 +224,24 @@ def add_task():
 @app.route('/')
 def user():
     # Retrieve tasks from the database
-    query = "SELECT * FROM tasks"
-    tasks = db.fetchall(query)
-    
+    tasks = db.fetchall("SELECT * FROM tasks")
     return render_template('user.html', tasks=tasks)
+
+
+@app.route('/task/<int:task_id>')
+def show_task(task_id):
+
+    query = "SELECT * FROM tasks WHERE id = %s"
+    db.execute(query, (task_id,))  # Execute the query with parameters
+    task = db.fetchone()  # Fetch the result
+
+    if not task:
+        flash('Task not found.')
+        return redirect(url_for('user'))
+
+    return render_template('show_task.html', task=task)
+
+
 
 
 if __name__ == '__main__':

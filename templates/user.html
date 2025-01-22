@@ -42,8 +42,8 @@
                 </tr>
                 {% for task in tasks %}
                 <tr>
-                    <td>{{ task['title'] }}</td>
-                    <td>{{task['status']}}</td>
+                    <td><a href="{{ url_for('show_task', task_id=task['id']) }}">{{ task['title'] }}</a></td>
+                    <td>{{ task['status'] }}</td>
                     <td>{{ task['priority'] }}</td>
                     <td>{{ task['deadline'] }}</td>
                 </tr>
