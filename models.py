@@ -1,5 +1,5 @@
 #models.py
-
+import bcrypt
 import mysql.connector
 
 class Database:
@@ -59,8 +59,20 @@ class User:
         if role not in User.VALID_ROLES:
             raise ValueError("Ongeldige rol. Alleen 'user' of 'admin' is toegestaan.")
         
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')  # Opslaan als string
+        
         query = "INSERT INTO users (name, email, password, role) VALUES (%s, %s, %s, %s)"
-        db.execute(query, (name, email, password, role))
+        db.execute(query, (name, email, hashed_password, role))
+        
+        
+        
+    @staticmethod
+    def verify_password(stored_password, provided_password):
+        """
+        Verifieer een wachtwoord door te vergelijken met de opgeslagen hash.
+        """
+        return bcrypt.checkpw(provided_password.encode('utf-8'), stored_password.encode('utf-8'))
+        
     @staticmethod
     def get_user_by_id(user_id):
         """
@@ -103,7 +115,7 @@ class User:
         users = cursor.fetchall()
         print(f"DEBUG: Alle gebruikers: {users}")  # Debugging
         return users
-
+    
 class Task:
     @staticmethod
     def add_task(title, description, status, priority, deadline, user_id):

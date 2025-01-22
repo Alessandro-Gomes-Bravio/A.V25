@@ -31,8 +31,8 @@ def login():
         flash("E-mailadres bestaat niet. Controleer je invoer.", "error")
         return redirect('/')
 
-    # Controleer het wachtwoord
-    if user['password'] != password:
+    # Controleer het wachtwoord met hash-verificatie
+    if not User.verify_password(user['password'], password):
         flash("Wachtwoord is onjuist. Probeer opnieuw.", "error")
         return redirect('/')
 
@@ -94,7 +94,6 @@ def register():
     confirm_password = request.form['confirm_password']
     role = request.form['role']
     
-    
     if password != confirm_password:
         flash("Wachtwoorden komen niet overeen. Probeer opnieuw.", "error")
         return redirect('/')
@@ -117,7 +116,6 @@ def register():
     except ValueError as e:
         flash(str(e), "error")
     return redirect('/')
-
 
 
 
@@ -247,7 +245,6 @@ def show_task(task_id):
     return render_template('show_task.html', task=task)
 
 
-
 @app.route('/edit_task/<int:task_id>', methods=['GET'])
 def edit_task(task_id):
     task = Task.get_task_by_id(task_id)
@@ -268,6 +265,7 @@ def update_task(task_id):
     Task.update_task(task_id, title, description, status, priority, deadline, assigned_to, assigned_by)
 
     return redirect(url_for('show_task', task_id=task_id))  # Redirect to task details after update
+
 
 
 
