@@ -243,6 +243,28 @@ def show_task(task_id):
 
 
 
+@app.route('/edit_task/<int:task_id>', methods=['GET'])
+def edit_task(task_id):
+    task = Task.get_task_by_id(task_id)
+    if task:
+        return render_template('edit_task.html', task=task)  # Render edit form with task data
+    return redirect(url_for('show_tasks'))  # Redirect if task not found
+
+@app.route('/update_task/<int:task_id>', methods=['POST'])
+def update_task(task_id):
+    title = request.form['title']
+    description = request.form['description']
+    status = request.form['status']
+    priority = request.form['priority']
+    deadline = request.form['deadline']
+    assigned_to = request.form['assigned_to']
+    assigned_by = request.form['assigned_by']
+
+    Task.update_task(task_id, title, description, status, priority, deadline, assigned_to, assigned_by)
+
+    return redirect(url_for('show_task', task_id=task_id))  # Redirect to task details after update
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

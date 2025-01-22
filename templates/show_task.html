@@ -7,16 +7,18 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='task.css') }}">
     </head>
     <body>
-        <h1>Task Details</h1>
-        <p><strong>Title:</strong> {{ task['title'] }}</p>
-        <p><strong>Description:</strong> {{ task['description'] }}</p>
-        <p><strong>Status:</strong> {{ task['status'] }}</p>
-        <p><strong>Priority:</strong> {{ task['priority'] }}</p>
-        <p><strong>Deadline:</strong> {{ task['deadline'] }}</p>
-        <p><strong>Assigned To:</strong> {{ task['assigned_to'] }}</p>
-        <p><strong>Assigned By:</strong> {{ task['assigned_by'] }}</p>
-        <p><strong>Created At:</strong> {{ task['created_at'] }}</p>
-        <p><strong>Updated At:</strong> {{ task['updated_at'] }}</p>
+        <div class="container">
+            <h1>Task Details</h1>
+            <p><strong>Title:</strong> {{ task['title'] }}</p>
+            <p><strong>Description:</strong> {{ task['description'] }}</p>
+            <p><strong>Status:</strong> {{ task['status'] }}</p>
+            <p><strong>Priority:</strong> {{ task['priority'] }}</p>
+            <p><strong>Deadline:</strong> {{ task['deadline'] }}</p>
+            <p><strong>Assigned To:</strong> {{ task['assigned_to'] }}</p>
+            <p><strong>Assigned By:</strong> {{ task['assigned_by'] }}</p>
+            <p><strong>Created At:</strong> {{ task['created_at'] }}</p>
+            <p><strong>Updated At:</strong> {{ task['updated_at'] }}</p>
+        </div>
         <a href="{{ url_for('user') }}">Back to Task List</a>
     </body>
 </html>
