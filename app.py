@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from facialreg import save_facial_encoding, verify_facial_id
+from datetime import date
 from models import User
 from models import db 
+from models import Task
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -191,6 +193,37 @@ def choose_account():
         flash("Ongeldig account gekozen. Probeer opnieuw.", "error")
         return redirect('/')
 
+@app.route('/add_task', methods=['GET', 'POST'])
+def add_task():
+    if request.method == 'POST':
+        # Get form data
+        title = request.form['title']
+        description = request.form['description']
+        status = request.form['status']
+        priority = request.form['priority']
+        deadline = request.form['deadline']
+
+        # Validate deadline
+        today = date.today()
+        if date.fromisoformat(deadline) <= today:
+            flash('The deadline must be a future date.')
+            return render_template('add_task.html', current_date=today.isoformat())
+        
+        # Insert task into the database
+        Task.add_task(title, description, status, priority, deadline)
+        return redirect(url_for('user'))
+    
+    return render_template('add_task.html', current_date=date.today().isoformat())
+
+
+
+@app.route('/')
+def user():
+    # Retrieve tasks from the database
+    query = "SELECT * FROM tasks"
+    tasks = db.fetchall(query)
+    
+    return render_template('user.html', tasks=tasks)
 
 
 if __name__ == '__main__':

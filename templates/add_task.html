@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add Task</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='user.css') }}">
+    </head>
+    <body>
+        <h1>Add a New Task</h1>
+        <form method="POST">
+            <label for="title">Title:</label>
+            <input type="text" name="title" required><br>
+            <label for="description">Description:</label>
+            <textarea name="description" required></textarea><br>
+            <select name="status" required>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Canceled">Canceled</option>
+            </select><br>
+            <label for="priority">Priority:</label>
+            <select name="priority" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select><br>
+            <label for="status">Status:</label>
+            <label for="deadline">Deadline:</label>
+            <input type="date" id="deadline" name="deadline" min="{{ current_date }}"required><br>
+            <button type="submit">Create Task</button>
+        </form>
+        <a href="{{ url_for('user') }}">Back to Task List</a>
+    </body>
+</html>
