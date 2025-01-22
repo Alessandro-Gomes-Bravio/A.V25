@@ -65,8 +65,8 @@ def user_dashboard():
         flash("Je moet ingelogd zijn om toegang te krijgen tot het gebruikersdashboard.", "error")
         return redirect('/')
     
-    # Retrieve tasks for the logged-in user
-    tasks = Task.get_all_tasks()  # Assuming it fetches tasks for all users (adapt if needed)
+    user_id = session['user_id']
+    tasks = Task.get_tasks_by_user(user_id)
     return render_template('user.html', user_name=session.get('user_name'), user_role=session.get('user_role'), tasks=tasks)
 
 
@@ -199,6 +199,10 @@ def choose_account():
 
 @app.route('/add_task', methods=['GET', 'POST'])
 def add_task():
+    if 'user_id' not in session:
+        flash("Je moet ingelogd zijn om taken toe te voegen.", "error")
+        return redirect('/')
+
     if request.method == 'POST':
         # Get form data
         title = request.form['title']
@@ -206,6 +210,7 @@ def add_task():
         status = request.form['status']
         priority = request.form['priority']
         deadline = request.form['deadline']
+        user_id = session['user_id']
 
         # Validate deadline
         today = date.today()
@@ -214,11 +219,11 @@ def add_task():
             return render_template('add_task.html', current_date=today.isoformat())
         
         # Insert task into the database
-        Task.add_task(title, description, status, priority, deadline)
-        return redirect(url_for('user'))
+        Task.add_task(title, description, status, priority, deadline, user_id)
+        flash('Taak succesvol toegevoegd!')
+        return redirect(url_for('user_dashboard'))
     
     return render_template('add_task.html', current_date=date.today().isoformat())
-
 
 
 @app.route('/')

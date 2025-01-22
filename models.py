@@ -106,17 +106,35 @@ class User:
 
 class Task:
     @staticmethod
-    def add_task(title, description, status, priority, deadline):
+    def add_task(title, description, status, priority, deadline, user_id):
         """
-        Voeg een taak toe aan de database.
+        Voeg een taak toe aan de database voor een specifieke gebruiker.
         """
         query = """
-        INSERT INTO tasks (title, description, status, priority, deadline)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO tasks (title, description, status, priority, deadline, user_id)
+        VALUES (%s, %s, %s, %s, %s, %s)
         """
-        db.execute(query, (title, description, status, priority, deadline))
-        print(f"DEBUG: Taak toegevoegd: {title}")  # Debugging
+        db.execute(query, (title, description, status, priority, deadline, user_id))
+        print(f"DEBUG: Taak toegevoegd voor gebruiker {user_id}: {title}")  # Debugging
   
+    @staticmethod
+    def get_tasks_by_user(user_id):
+        """
+        Fetch all tasks for a specific user.
+        """
+        query = "SELECT * FROM tasks WHERE user_id = %s"
+        cursor = db.execute(query, (user_id,))
+        return cursor.fetchall()
+
+    @staticmethod
+    def get_task_by_id(task_id, user_id):
+        """
+        Haal een taak op basis van ID en controleer of deze bij de gebruiker hoort.
+        """
+        query = "SELECT * FROM tasks WHERE id = %s AND user_id = %s"
+        cursor = db.execute(query, (task_id, user_id))
+        return cursor.fetchone()
+
     @staticmethod
     def get_all_tasks():
         """
