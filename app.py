@@ -198,7 +198,7 @@ def choose_account():
 @app.route('/add_task', methods=['GET', 'POST'])
 def add_task():
     if 'user_id' not in session:
-        flash("Je moet ingelogd zijn om taken toe te voegen.", "error")
+        flash("Je moet ingelogd zijn om deze actie uit te voeren.", "error")
         return redirect('/')
 
     if request.method == 'POST':
@@ -233,6 +233,9 @@ def user():
 
 @app.route('/task/<int:task_id>')
 def show_task(task_id):
+    if 'user_id' not in session:
+        flash("Je moet ingelogd zijn om deze actie uit te voeren.", "error")
+        return redirect('/')
 
     query = "SELECT * FROM tasks WHERE id = %s"
     db.execute(query, (task_id,))  # Execute the query with parameters
@@ -247,6 +250,9 @@ def show_task(task_id):
 
 @app.route('/edit_task/<int:task_id>', methods=['GET'])
 def edit_task(task_id):
+    if 'user_id' not in session:
+        flash("Je moet ingelogd zijn om deze actie uit te voeren.", "error")
+        return redirect('/')
     task = Task.get_task_by_id(task_id)
     if task:
         return render_template('edit_task.html', task=task)  # Render edit form with task data
@@ -254,6 +260,9 @@ def edit_task(task_id):
 
 @app.route('/update_task/<int:task_id>', methods=['POST'])
 def update_task(task_id):
+    if 'user_id' not in session:
+        flash("Je moet ingelogd zijn om deze actie uit te voeren.", "error")
+        return redirect('/')
     title = request.form['title']
     description = request.form['description']
     status = request.form['status']
@@ -269,6 +278,9 @@ def update_task(task_id):
 
 @app.route('/filter_tasks', methods=['GET'])
 def filter_tasks():
+    if 'user_id' not in session:
+        flash("Je moet ingelogd zijn om deze actie uit te voeren.", "error")
+        return redirect('/')
     """
     Filter tasks based on user-selected criteria and search value.
     """
@@ -288,6 +300,9 @@ def filter_tasks():
 
 @app.route('/delete_task/<int:task_id>', methods=['POST'])
 def delete_task(task_id):
+    if 'user_id' not in session:
+        flash("Je moet ingelogd zijn om deze actie uit te voeren.", "error")
+        return redirect('/')
     """
     Delete a task based on its ID.
     """
