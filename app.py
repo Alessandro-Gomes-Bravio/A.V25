@@ -224,7 +224,7 @@ def add_task():
     return render_template('add_task.html', current_date=date.today().isoformat())
 
 
-@app.route('/')
+@app.route('/user')
 def user():
     # Retrieve tasks from the database
     tasks = db.fetchall("SELECT * FROM tasks")
@@ -265,6 +265,49 @@ def update_task(task_id):
     Task.update_task(task_id, title, description, status, priority, deadline, assigned_to, assigned_by)
 
     return redirect(url_for('show_task', task_id=task_id))  # Redirect to task details after update
+
+
+@app.route('/filter_tasks', methods=['GET'])
+def filter_tasks():
+    """
+    Filter tasks based on user-selected criteria and search value.
+    """
+    if 'user_id' not in session:
+        flash("Je moet ingelogd zijn om taken te filteren.", "error")
+        return redirect('/')
+
+    user_id = session['user_id']
+    filter_criteria = request.args.get('filter', 'name')  # Default filter
+    search_value = request.args.get('search', '').strip()  # Search value
+
+    # Use the model to get filtered tasks
+    tasks = Task.filter_tasks(user_id, filter_criteria, search_value)
+
+    return render_template('user.html', tasks=tasks, filter=filter_criteria, search_value=search_value)
+
+
+@app.route('/delete_task/<int:task_id>', methods=['POST'])
+def delete_task(task_id):
+    """
+    Delete a task based on its ID.
+    """
+    if 'user_id' not in session:
+        flash("You must be logged in to delete tasks.", "error")
+        return redirect('/')
+
+    user_id = session['user_id']
+
+    # Ensure the task belongs to the logged-in user
+    task = Task.get_task_by_id(task_id)
+    if not task or task['user_id'] != user_id:
+        flash("Task not found or you don't have permission to delete this task.", "error")
+        return redirect(url_for('user_dashboard'))
+
+    # Delete the task from the database
+    Task.delete_task(task_id)
+    flash("Task successfully deleted.", "success")
+    return redirect(url_for('user_dashboard'))
+
 
 
 

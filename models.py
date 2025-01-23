@@ -177,3 +177,39 @@ class Task:
         """
         db.execute(query, (title, description, status, priority, deadline, assigned_to, assigned_by, task_id))
         print(f"DEBUG: Taak geüpdatet: {title}")
+
+
+    @staticmethod
+    def filter_tasks(user_id, filter_criteria=None, search_value=None):
+
+
+        query = "SELECT * FROM tasks WHERE user_id = %s"
+        params = [user_id]
+
+        if search_value:
+            if filter_criteria == 'name':
+                query += " AND title LIKE %s"
+                params.append(f"%{search_value}%")
+            elif filter_criteria == 'status':
+                query += " AND status = %s"
+                params.append(search_value)
+            elif filter_criteria == 'priority':
+                query += " AND priority = %s"
+                params.append(search_value)
+            elif filter_criteria == 'deadline':
+                query += " AND deadline = %s"
+                params.append(search_value)
+
+        db.execute(query, tuple(params))
+        return db.fetchall()
+
+
+    @staticmethod
+    def delete_task(task_id):
+        """
+        Delete a task from the database based on its ID.
+        """
+        query = "DELETE FROM tasks WHERE id = %s"
+        db.execute(query, (task_id,))
+        print(f"DEBUG: Task with ID {task_id} deleted.")  # Debugging
+

@@ -72,7 +72,7 @@ body {
 /* Container styling */
 .container {
     margin: 50px auto;
-    max-width: 800px;
+    max-width: 900px;
     text-align: center;
 }
 
@@ -83,10 +83,92 @@ body {
 
 #facialContainer {
     margin: 20px auto;
-    max-width: 600px;
+    max-width: 700px;
     text-align: center;
     background: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Styling for the tasks class (task list) */
+.tasks {
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Table styling */
+.tasks table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.tasks table th,
+.tasks table td {
+    padding: 10px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.tasks table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.tasks table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tasks table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.tasks table a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.tasks table a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Buttons in the task list */
+.tasks button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tasks button:hover {
+    background-color: #ddd;
+}
+
+.tasks button.danger-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.tasks button.danger-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Add Task Link */
+.tasks a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
